@@ -18,17 +18,17 @@ def create_file_name():
     images_directory = "images"
     # Creates the images directory if it's not already there
     os.makedirs(images_directory, exist_ok=True)
-    file_name = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S.jpg")
+    file_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.jpg")
 
     return os.path.join(images_directory, file_name)
 
 def on_motion():
     print("Motion detected!!!")
-    camera.start(show_preview=True)
+    camera.start(show_preview=False)
     image_name = create_file_name()
-    time.sleep(.2)
+    time.sleep(1)
     camera.switch_mode_and_capture_file(capture_config, image_name)
-    camera.stop_preview()
+    camera.stop()
     print("Saved image!")
     time.sleep(5)
 
@@ -36,6 +36,7 @@ def main():
     try:
         while True:
             print("Waiting for motion...")
+            # Blocks until motion is detected
             pir.wait_for_motion()
             on_motion()
     except KeyboardInterrupt:

@@ -13,12 +13,25 @@ picam2.start()
 # Load YOLOv8
 model = YOLO("yolov8n_ncnn_model")
 
+objects_to_detect = [15] # 15 for Cat
+
 while True:
     # Capture a frame from the camera
     frame = picam2.capture_array()
     
     # Run YOLO model on the captured frame and store the results
     results = model(frame)
+    
+    detected_list = results[0].boxes.cls.tolist()
+
+    for obj_id in objects_to_detect:
+        if obj_id in detected_list:
+            print("Cat detected!")
+            # Send message to API with image attached
+        elif not detected_list:
+            print("Nothing detected...")
+        else:
+            print("Unknown detected!")
     
     # Output the visual detection data, we will draw this on our camera preview window
     annotated_frame = results[0].plot()

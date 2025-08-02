@@ -1,0 +1,7 @@
+images/
+
+*.pt
+
+*.torchscript
+
+yolov8n_ncnn_model
