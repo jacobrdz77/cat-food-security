@@ -1,5 +1,7 @@
 images/
 
+__pycache__
+
 *.pt
 
 *.torchscript
