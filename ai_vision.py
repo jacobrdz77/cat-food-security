@@ -45,11 +45,24 @@ class YoloDetector():
             # Run YOLO model on the captured frame and store the results
             frame = picamera2.capture_array()
             results = self.model(frame)
+
             detected_list = results[0].boxes.cls.tolist()
-            for obj_id in detected_list:
-                print(f"ID: {obj_id}")
+            confidence = results[0].boxes.conf.tolist()
+
+            # print(f"Detected IDs: {detected_list}")
+            # print(f"Confidence: {confidence}")
+
+            for i, obj_id in enumerate(detected_list):
+                # print(f"ID: {obj_id}")
                 if obj_id == 15 :
                     print("Cat detected!")
+                    print(f"Confidence of CAT: {confidence[i]} ")
+
+                    # confidence has to be greater than 65% to be considered a cat
+                    if confidence[i] < 0.65:
+                        print("*****Not CAT enough! Continuing...******")
+                        continue
+
                     stop_event.set()
                     countdown_thread.join()
                     # Send message to API with image attached

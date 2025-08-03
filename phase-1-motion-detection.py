@@ -14,7 +14,8 @@ def create_file_name():
     file_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.jpg")
     return os.path.join(images_directory, file_name)
 
-def create_image(image_array, file_name):
+def create_image(image_array):
+    file_name = create_file_name()
     cv2.imwrite(file_name, image_array)
     print("Created image!")
 
@@ -26,8 +27,7 @@ def on_motion(detect_func, camera):
 
     # Only creates image if cat is detected
     if results["is_cat_detected"]:
-        image_name = create_file_name()
-        create_image(results["image_frame"], image_name)
+        create_image(results["image_frame"])
         # Sends image to AP
     time.sleep(5)
 
