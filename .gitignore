@@ -7,3 +7,5 @@ __pycache__
 *.torchscript
 
 yolov8n_ncnn_model
+
+.env
