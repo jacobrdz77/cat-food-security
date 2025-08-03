@@ -15,41 +15,35 @@ def create_file_name():
     return os.path.join(images_directory, file_name)
 
 def create_image(image_array, file_name):
-    frame = cv2.cvtColor(image_array, cv2.COLOR_RGB2BGR)
-    cv2.imwrite(file_name, frame)
+    cv2.imwrite(file_name, image_array)
     print("Created image!")
 
 def on_motion(detect_func, camera):
     print("Motion detected!!!")
-    camera.start(show_preview=False)
-    image_name = create_file_name()
-    time.sleep(1)
-
-    image_frame = camera.capture_array()
-    is_cat_detected = detect_func(image_frame)
+    results = detect_func(camera)
+    is_cat_detected = results["is_cat_detected"]
     print(f"Is cat detected?: {is_cat_detected}")
 
-    create_image(image_frame, image_name)
-
-    # if(is_cat_detected):
-    #     # Send image to API
-    #     print("Sending image to API")
-    # else:
-    #     print("Doing nothing...")
-    #
+    # Only creates image if cat is detected
+    if results["is_cat_detected"]:
+        image_name = create_file_name()
+        create_image(results["image_frame"], image_name)
+        # Sends image to AP
     time.sleep(5)
 
 def main():
-    detector = YoloDetector()
     # PIR - GPIO 4 (PIN 7)
     pir = MotionSensor(4)
+    detector = YoloDetector()
 
     # PiCamera
     camera = Picamera2()
     camera.preview_configuration.main.size = (1280, 1280)
+    camera.preview_configuration.main.format = "RGB888"
     camera.preview_configuration.align()
-    capture_config = camera.create_still_configuration()
     camera.configure("preview")
+    camera.start(show_preview=False)
+    time.sleep(2)
     try:
         while True:
             print("Waiting for motion...")
@@ -58,6 +52,7 @@ def main():
             on_motion(detector.detect, camera)
     except KeyboardInterrupt:
         print("Stopping...")
+        camera.stop()
 
 # Only runs if this file is being ran directly in the terminal
 if __name__ == "__main__":

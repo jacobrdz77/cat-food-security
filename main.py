@@ -35,7 +35,7 @@ while True:
     
     # Output the visual detection data, we will draw this on our camera preview window
     annotated_frame = results[0].plot()
-    
+
     # Get inference time
     inference_time = results[0].speed['inference']
     fps = 1000 / inference_time  # Convert to milliseconds
