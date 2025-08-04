@@ -24,6 +24,9 @@ def create_debug_name():
     debug_name = f"debug_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.jpg"
     return os.path.join(images_directory, debug_name)
 
+CONFIDENCE_CAT = 0.65
+DETECTION_COUNTDOWN_TIMER = 5
+
 class YoloDetector():
     """
     YoloDetector - Uses Picamera2 & Yolo model to detect objects
@@ -38,7 +41,7 @@ class YoloDetector():
         stop_event.clear()
 
         # Starts 10 second timer
-        countdown_thread = threading.Thread(target=countdown, args=(5,), daemon=True)
+        countdown_thread = threading.Thread(target=countdown, args=(DETECTION_COUNTDOWN_TIMER,), daemon=True)
         countdown_thread.start()
 
         while not stop_event.is_set():
@@ -59,7 +62,7 @@ class YoloDetector():
                     print(f"Confidence of CAT: {confidence[i]} ")
 
                     # confidence has to be greater than 65% to be considered a cat
-                    if confidence[i] < 0.65:
+                    if confidence[i] < CONFIDENCE_CAT:
                         print("*****Not CAT enough! Continuing...******")
                         continue
 
