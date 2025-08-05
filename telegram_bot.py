@@ -16,7 +16,7 @@ class CatSecurityBot:
         BOT_KEY = os.getenv("BOT_KEY")
         self.message_id = os.getenv("MESSAGE_ID")
         if not BOT_KEY or not self.message_id:
-            raise ValueError("No Bot Key or Message ID found.")
+            raise ValueError("No Bot Key or Message ID found. Make sure they are defined in the .env file.")
 
         if debug_enabled:
             logging.basicConfig(
