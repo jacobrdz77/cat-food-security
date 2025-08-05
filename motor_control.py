@@ -1,4 +1,4 @@
-import gpiozero import Motor, PWMOutputDevice
+from gpiozero import Motor, PWMOutputDevice
 import time
 import signal
 
@@ -36,9 +36,9 @@ class DispenseMotor:
         exit(0)
 
 def main():
-    try:
-        motor = DispenseMotor()
-        motor.dispense_food()
+    motor = DispenseMotor()
+    motor.dispense_food()
+
 
 if __name__ == "__main__":
     main()
