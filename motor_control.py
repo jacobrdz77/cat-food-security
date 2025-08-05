@@ -15,13 +15,13 @@ class DispenseMotor:
     def dispense_food(self):
         try:
             print("Running motor forward...")
-            self.motor.forward(0.3)
-            time.sleep(4)
+            self.motor.forward(0.7)
+            time.sleep(8)
 
 
             print("Running motor backwards...")
-            self.motor.backward(0.3)
-            time.sleep(1)
+            self.motor.backward(0.7)
+            time.sleep(2)
 
             print("Stopping motor...")
             self.motor.stop()
