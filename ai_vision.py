@@ -1,9 +1,7 @@
 import threading
-import cv2
 import os
 import datetime
 
-from picamera2 import Picamera2
 from ultralytics import YOLO
 from time import sleep
 
