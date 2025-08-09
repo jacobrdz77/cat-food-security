@@ -1,4 +1,3 @@
-import time
 import datetime
 import os
 import cv2
@@ -8,6 +7,7 @@ from gpiozero import MotionSensor
 from picamera2 import Picamera2
 from ai_vision import YoloDetector
 from telegram_bot import CatSecurityBot
+from api import send_create_log
 
 def create_file_name():
     """Creates a filename for an image that includes date and time and returns a images/create_file_name.jpg path"""
@@ -34,6 +34,7 @@ async def on_motion(detect_func, camera, bot) -> None:
     # Only creates image if cat is detected
     if results["is_cat_detected"]:
         image_path = create_image(results["image_frame"])
+        send_create_log(image_path, "cat")
         await bot.send_image(image_path, "Cat detected")
     await asyncio.sleep(MOTION_SLEEP_DELAY)
 

@@ -33,4 +33,10 @@
 - `ultralytics`
 - `cv2`
 
+## Creating symlink
+- Make sure to setup a sysmlink from the images directory to the local Nextjs website's public directory
+    - this makes it so that the website is able to know where the images are
+```bash
+ln -s /home/raspberry/cat-food-security/images /home/raspberry/the-local-nextjs-website/public/images
+```
 
