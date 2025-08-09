@@ -1,4 +1,3 @@
-import dotenv
 import os
 import logging
 
@@ -14,8 +13,8 @@ class CatSecurityBot:
         """Initializes with bot key and user ID from environment variables. By default, it allows debug logging."""
         load_dotenv()
         BOT_KEY = os.getenv("BOT_KEY")
-        self.message_id = os.getenv("MESSAGE_ID")
-        if not BOT_KEY or not self.message_id:
+        self.message_id = os.getenv("CHAT_ID")
+        if not BOT_KEY:
             raise ValueError("No Bot Key or Message ID found. Make sure they are defined in the .env file.")
 
         if debug_enabled:
@@ -49,12 +48,19 @@ class CatSecurityBot:
         self.app.add_handler(CommandHandler("hello", self.hello_command))
 
     async def hello_command(self, update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
-        """Example Hello command for bot."""
+        if update.effective_user == None:
+            raise ValueError("update.effective_user is None")
+        if update.message == None:
+            raise ValueError("update.message is None")
+        print(f"Chat ID of user: {update.effective_chat.id}") # This does exist
         await update.message.reply_text(f"Hello {update.effective_user.first_name}")
 
     async def send_image(self, image_path: str, message: str):
         """Sends image using the image_path provided. (Parse Mode is MarkdownV2)"""
         try:
+            if self.message_id == None:
+                raise ValueError("self.message_id is None")
+
             with open(image_path, "rb") as image:
                 await self.app.bot.send_photo(
                     chat_id=self.message_id,

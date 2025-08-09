@@ -56,7 +56,7 @@ async def main():
         while True:
             print("Waiting for motion...")
             # Blocks until motion is detected
-            await asyncio.to_thread(pir.wait_for_motion)
+            await asyncio.to_thread(pir.wait_for_active)
             await on_motion(detector.detect, camera, bot)
     except KeyboardInterrupt:
         print("Stopping...")
