@@ -3,11 +3,11 @@ import os
 import cv2
 import asyncio
 
-from gpiozero import MotionSensor
 from picamera2 import Picamera2
 from ai_vision import YoloDetector
 from telegram_bot import CatSecurityBot
 from api import send_create_log
+from distance_sensor import wait_for_in_range
 
 def create_file_name():
     """Creates a filename for an image that includes date and time and returns a images/create_file_name.jpg path"""
@@ -40,7 +40,6 @@ async def on_motion(detect_func, camera, bot) -> None:
 
 async def main():
     # PIR - GPIO 4 (PIN 7)
-    pir = MotionSensor(4)
     detector = YoloDetector()
     bot = CatSecurityBot()
 
@@ -57,7 +56,7 @@ async def main():
         while True:
             print("Waiting for motion...")
             # Blocks until motion is detected
-            await asyncio.to_thread(pir.wait_for_active)
+            await asyncio.to_thread(wait_for_in_range)
             await on_motion(detector.detect, camera, bot)
     except KeyboardInterrupt:
         print("Stopping...")
