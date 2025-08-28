@@ -37,6 +37,7 @@ async def on_motion(detect_func, camera, bot) -> None:
         image_path = create_image(results["image_frame"])
         await bot.send_image(image_path, "Cat detected")
         send_create_log(image_path, "cat")
+        print("Delaying...")
         await asyncio.sleep(CAUGHT_CAT_SLEEP_DELAY)
         return
     print("Delaying...")

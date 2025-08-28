@@ -2,8 +2,9 @@ from gpiozero import Motor, PWMOutputDevice
 import time
 import signal
 
-MOTOR_1 = 23 #GPIO 23
-MOTOR_2= 24 #GPIO 24
+#GPIOs
+MOTOR_1 = 17 
+MOTOR_2= 27 
 PWM_PIN = 18 #GPIO 18 for PWM control
 
 class DispenseMotor:
@@ -33,7 +34,7 @@ class DispenseMotor:
 
 
             print("Running motor backwards...")
-            self.motor.backward(0.7)
+            self.motor.backward(1)
             time.sleep(2)
 
         except Exception as e:
