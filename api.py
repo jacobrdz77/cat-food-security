@@ -26,4 +26,4 @@ def send_create_log(img_path: str, type: str):
       print("Error:", response.status_code, response.json())
 
   except Exception as e:
-    raise e
+    print(f"Error sending POST request to API: {e}")

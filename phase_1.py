@@ -25,6 +25,7 @@ def create_image(image_array) -> str:
 
 
 MOTION_SLEEP_DELAY = 5
+CAUGHT_CAT_SLEEP_DELAY = 30
 async def on_motion(detect_func, camera, bot) -> None:
     print("Motion detected!!!")
     results = detect_func(camera)
@@ -34,10 +35,19 @@ async def on_motion(detect_func, camera, bot) -> None:
     # Only creates image if cat is detected
     if results["is_cat_detected"]:
         image_path = create_image(results["image_frame"])
-        send_create_log(image_path, "cat")
         await bot.send_image(image_path, "Cat detected")
+        send_create_log(image_path, "cat")
+        await asyncio.sleep(CAUGHT_CAT_SLEEP_DELAY)
+        return
+    print("Delaying...")
     await asyncio.sleep(MOTION_SLEEP_DELAY)
 
+"""
+Phase 1: Distance Detection
+- If an object enters the threshold_distance, it activates the on_motion function.
+- on_motion function runs the YOLO model to detect objects and cat.
+- If cat detected, it sends the Telegram Bot the image captured and a log to a local API.
+"""
 async def main():
     # PIR - GPIO 4 (PIN 7)
     detector = YoloDetector()

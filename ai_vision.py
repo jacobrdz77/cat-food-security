@@ -38,7 +38,7 @@ class YoloDetector():
         print("Starting detection...")
         stop_event.clear()
 
-        # Starts 10 second timer
+        # Starts timer
         countdown_thread = threading.Thread(target=countdown, args=(DETECTION_COUNTDOWN_TIMER,), daemon=True)
         countdown_thread.start()
 
@@ -57,16 +57,15 @@ class YoloDetector():
                 # print(f"ID: {obj_id}")
                 if obj_id == 15 :
                     print("Cat detected!")
-                    print(f"Confidence of CAT: {confidence[i]} ")
+                    print(f"Confidence of Cat: {confidence[i]} ")
 
                     # confidence has to be greater than 65% to be considered a cat
                     if confidence[i] < CONFIDENCE_CAT:
-                        print("*****Not CAT enough! Continuing...******")
+                        print("*****Not CAT enough!******")
                         continue
 
                     stop_event.set()
                     countdown_thread.join()
-                    # Send message to API with image attached
                     return {"is_cat_detected": True, "image_frame": frame} 
                 if obj_id == 0:
                     print("HUMAN detected!")
